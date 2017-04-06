@@ -8,10 +8,27 @@
 
 import UIKit
 
+
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    func lastTweetDate() -> Date{
+        var dc = DateComponents()
+        dc.year = 2013
+        dc.month = 03
+        dc.day = 14
+        dc.timeZone = TimeZone(abbreviation: "PST")
+        dc.hour = 14
+        dc.minute = 15
+        
+        let cal = Calendar.current
+        let date = cal.date(from: dc)
+        
+        return date!
+    }
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {

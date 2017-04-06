@@ -13,6 +13,7 @@
 		E29B1F501E95A0E90031B9F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E29B1F4F1E95A0E90031B9F0 /* Assets.xcassets */; };
 		E29B1F531E95A0E90031B9F0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E29B1F511E95A0E90031B9F0 /* LaunchScreen.storyboard */; };
 		E29B1FAA1E95DB290031B9F0 /* AddTweetTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29B1FA91E95DB290031B9F0 /* AddTweetTableViewController.swift */; };
+		E29B1FE51E96E7CB0031B9F0 /* TwitterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29B1FE41E96E7CB0031B9F0 /* TwitterTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +91,7 @@
 		E29B1F541E95A0E90031B9F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E29B1F5A1E95AC980031B9F0 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = ../Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
 		E29B1FA91E95DB290031B9F0 /* AddTweetTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTweetTableViewController.swift; sourceTree = "<group>"; };
+		E29B1FE41E96E7CB0031B9F0 /* TwitterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,8 +126,9 @@
 			children = (
 				E29B1F5A1E95AC980031B9F0 /* Alamofire.xcodeproj */,
 				E29B1F481E95A0E90031B9F0 /* AppDelegate.swift */,
-				E29B1F4A1E95A0E90031B9F0 /* ViewController.swift */,
+				E29B1FE41E96E7CB0031B9F0 /* TwitterTableViewController.swift */,
 				E29B1FA91E95DB290031B9F0 /* AddTweetTableViewController.swift */,
+				E29B1F4A1E95A0E90031B9F0 /* ViewController.swift */,
 				E29B1F4C1E95A0E90031B9F0 /* Main.storyboard */,
 				E29B1F4F1E95A0E90031B9F0 /* Assets.xcassets */,
 				E29B1F511E95A0E90031B9F0 /* LaunchScreen.storyboard */,
@@ -282,6 +285,7 @@
 			files = (
 				E29B1F4B1E95A0E90031B9F0 /* ViewController.swift in Sources */,
 				E29B1FAA1E95DB290031B9F0 /* AddTweetTableViewController.swift in Sources */,
+				E29B1FE51E96E7CB0031B9F0 /* TwitterTableViewController.swift in Sources */,
 				E29B1F491E95A0E90031B9F0 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
