@@ -8,17 +8,14 @@
 
 import UIKit
 
-class AddTweetTableViewController: UITableViewController, UITextFieldDelegate {
-    
-    
+class AddTweetTableViewController: UITableViewController, UITextViewDelegate {
     
     @IBOutlet weak var tweetTextView: UITextView!
     @IBOutlet weak var tweetCount: UILabel!
     
-    
-    
 
     //==== ADDED CODE =================================================
+    // Cancel button
     @IBAction func cancel(_ sender: Any) {
         self.dismiss(animated: true, completion:nil)
     }
@@ -28,35 +25,30 @@ class AddTweetTableViewController: UITableViewController, UITextFieldDelegate {
         tweetTextView.becomeFirstResponder()
     }
     
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        guard let text = textField.text else { return true }
-        let length = text.characters.count + string.characters.count - range.length
-        
-        // create an Integer of 55 - the length of your TextField.text to count down
-        let count = 55 - length
-        
-        // set the .text property of your UILabel to the live created String
-        tweetCount.text =  String(count)
-        
-        // if you want to limit to 55 charakters
-        // you need to return true and <= 55
-        
-        return length <= 55 // To just allow up to 55 characters
+    // Responds to when tweetTextView changes, shows character count in UILable
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let MAX = 140
+        let length = textView.text.characters.count + text.characters.count - range.length
+        if length > MAX {
+            print ("max input")
+            return false
+        }
+        else {
+            tweetCount.text = String(length) + "/140"
+        }
+        return true
     }
     
     
-    
-
-    
-    
-    
+        
     //==== XCODE GENERATED CODE ========================================
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tweetCount.text = String(140)
+        tweetTextView.delegate = self
+        
+        // Set the start of tweet to 0 out of 140 characters
+        tweetCount.text = "0/140"
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false

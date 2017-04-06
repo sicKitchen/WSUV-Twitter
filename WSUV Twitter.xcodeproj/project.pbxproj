@@ -450,6 +450,7 @@
 				E29B1F591E95A0E90031B9F0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
