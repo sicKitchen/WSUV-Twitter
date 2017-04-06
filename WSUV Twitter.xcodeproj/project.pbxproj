@@ -12,7 +12,73 @@
 		E29B1F4E1E95A0E90031B9F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E29B1F4C1E95A0E90031B9F0 /* Main.storyboard */; };
 		E29B1F501E95A0E90031B9F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E29B1F4F1E95A0E90031B9F0 /* Assets.xcassets */; };
 		E29B1F531E95A0E90031B9F0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E29B1F511E95A0E90031B9F0 /* LaunchScreen.storyboard */; };
+		E29B1FAA1E95DB290031B9F0 /* AddTweetTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29B1FA91E95DB290031B9F0 /* AddTweetTableViewController.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E29B1FB51E95FFEC0031B9F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E29B1F5A1E95AC980031B9F0 /* Alamofire.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F8111E3319A95C8B0040E7D1;
+			remoteInfo = "Alamofire iOS";
+		};
+		E29B1FB71E95FFEC0031B9F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E29B1F5A1E95AC980031B9F0 /* Alamofire.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F8111E3E19A95C8B0040E7D1;
+			remoteInfo = "Alamofire iOS Tests";
+		};
+		E29B1FB91E95FFEC0031B9F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E29B1F5A1E95AC980031B9F0 /* Alamofire.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4DD67C0B1A5C55C900ED2280;
+			remoteInfo = "Alamofire macOS";
+		};
+		E29B1FBB1E95FFEC0031B9F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E29B1F5A1E95AC980031B9F0 /* Alamofire.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F829C6B21A7A94F100A2CD59;
+			remoteInfo = "Alamofire macOS Tests";
+		};
+		E29B1FBD1E95FFEC0031B9F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E29B1F5A1E95AC980031B9F0 /* Alamofire.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4CF626EF1BA7CB3E0011A099;
+			remoteInfo = "Alamofire tvOS";
+		};
+		E29B1FBF1E95FFEC0031B9F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E29B1F5A1E95AC980031B9F0 /* Alamofire.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4CF626F81BA7CB3E0011A099;
+			remoteInfo = "Alamofire tvOS Tests";
+		};
+		E29B1FC11E95FFEC0031B9F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E29B1F5A1E95AC980031B9F0 /* Alamofire.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E4202FE01B667AA100C997FB;
+			remoteInfo = "Alamofire watchOS";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E29B1F8F1E95AD8E0031B9F0 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		E29B1F451E95A0E80031B9F0 /* WSUV Twitter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WSUV Twitter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -22,6 +88,8 @@
 		E29B1F4F1E95A0E90031B9F0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E29B1F521E95A0E90031B9F0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E29B1F541E95A0E90031B9F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E29B1F5A1E95AC980031B9F0 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = ../../../../Desktop/Alamofire/Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
+		E29B1FA91E95DB290031B9F0 /* AddTweetTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTweetTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +122,30 @@
 		E29B1F471E95A0E80031B9F0 /* WSUV Twitter */ = {
 			isa = PBXGroup;
 			children = (
+				E29B1F5A1E95AC980031B9F0 /* Alamofire.xcodeproj */,
 				E29B1F481E95A0E90031B9F0 /* AppDelegate.swift */,
 				E29B1F4A1E95A0E90031B9F0 /* ViewController.swift */,
+				E29B1FA91E95DB290031B9F0 /* AddTweetTableViewController.swift */,
 				E29B1F4C1E95A0E90031B9F0 /* Main.storyboard */,
 				E29B1F4F1E95A0E90031B9F0 /* Assets.xcassets */,
 				E29B1F511E95A0E90031B9F0 /* LaunchScreen.storyboard */,
 				E29B1F541E95A0E90031B9F0 /* Info.plist */,
 			);
 			path = "WSUV Twitter";
+			sourceTree = "<group>";
+		};
+		E29B1FAB1E95FFEC0031B9F0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E29B1FB61E95FFEC0031B9F0 /* Alamofire.framework */,
+				E29B1FB81E95FFEC0031B9F0 /* Alamofire iOS Tests.xctest */,
+				E29B1FBA1E95FFEC0031B9F0 /* Alamofire.framework */,
+				E29B1FBC1E95FFEC0031B9F0 /* Alamofire macOS Tests.xctest */,
+				E29B1FBE1E95FFEC0031B9F0 /* Alamofire.framework */,
+				E29B1FC01E95FFEC0031B9F0 /* Alamofire tvOS Tests.xctest */,
+				E29B1FC21E95FFEC0031B9F0 /* Alamofire.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,6 +158,7 @@
 				E29B1F411E95A0E80031B9F0 /* Sources */,
 				E29B1F421E95A0E80031B9F0 /* Frameworks */,
 				E29B1F431E95A0E80031B9F0 /* Resources */,
+				E29B1F8F1E95AD8E0031B9F0 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -112,12 +197,70 @@
 			mainGroup = E29B1F3C1E95A0E80031B9F0;
 			productRefGroup = E29B1F461E95A0E80031B9F0 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = E29B1FAB1E95FFEC0031B9F0 /* Products */;
+					ProjectRef = E29B1F5A1E95AC980031B9F0 /* Alamofire.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				E29B1F441E95A0E80031B9F0 /* WSUV Twitter */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		E29B1FB61E95FFEC0031B9F0 /* Alamofire.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Alamofire.framework;
+			remoteRef = E29B1FB51E95FFEC0031B9F0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E29B1FB81E95FFEC0031B9F0 /* Alamofire iOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Alamofire iOS Tests.xctest";
+			remoteRef = E29B1FB71E95FFEC0031B9F0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E29B1FBA1E95FFEC0031B9F0 /* Alamofire.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Alamofire.framework;
+			remoteRef = E29B1FB91E95FFEC0031B9F0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E29B1FBC1E95FFEC0031B9F0 /* Alamofire macOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Alamofire macOS Tests.xctest";
+			remoteRef = E29B1FBB1E95FFEC0031B9F0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E29B1FBE1E95FFEC0031B9F0 /* Alamofire.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Alamofire.framework;
+			remoteRef = E29B1FBD1E95FFEC0031B9F0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E29B1FC01E95FFEC0031B9F0 /* Alamofire tvOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Alamofire tvOS Tests.xctest";
+			remoteRef = E29B1FBF1E95FFEC0031B9F0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E29B1FC21E95FFEC0031B9F0 /* Alamofire.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Alamofire.framework;
+			remoteRef = E29B1FC11E95FFEC0031B9F0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		E29B1F431E95A0E80031B9F0 /* Resources */ = {
@@ -138,6 +281,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E29B1F4B1E95A0E90031B9F0 /* ViewController.swift in Sources */,
+				E29B1FAA1E95DB290031B9F0 /* AddTweetTableViewController.swift in Sources */,
 				E29B1F491E95A0E90031B9F0 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -262,6 +406,7 @@
 		E29B1F581E95A0E90031B9F0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = YL4J9CQ3NN;
 				INFOPLIST_FILE = "WSUV Twitter/Info.plist";
@@ -275,6 +420,7 @@
 		E29B1F591E95A0E90031B9F0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = YL4J9CQ3NN;
 				INFOPLIST_FILE = "WSUV Twitter/Info.plist";
