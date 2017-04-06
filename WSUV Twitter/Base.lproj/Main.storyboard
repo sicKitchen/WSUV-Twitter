@@ -64,20 +64,34 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="163"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="LdB-9l-ZmI">
-                                                    <rect key="frame" x="8" y="8" width="398" height="146.66666666666666"/>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="3FS-pV-8VO" userLabel="Tweet Text View">
+                                                    <rect key="frame" x="8" y="39" width="398" height="115"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="Eyf-oh-2T0" id="00H-hH-CWZ"/>
+                                                    </connections>
                                                 </textView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="15n-SH-dpU">
+                                                    <rect key="frame" x="307" y="8" width="99" height="31"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="31" id="3Mh-ZR-Gj7"/>
+                                                        <constraint firstAttribute="width" constant="99" id="nBe-68-JSw"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.91372549020000005" green="0.88235294119999996" blue="0.83921568629999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
-                                                <constraint firstItem="LdB-9l-ZmI" firstAttribute="top" secondItem="FM8-1O-Jui" secondAttribute="topMargin" id="6Rr-6l-NXc"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="LdB-9l-ZmI" secondAttribute="bottom" id="uxR-zO-4yA"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="LdB-9l-ZmI" secondAttribute="trailing" id="x2E-qN-E84"/>
-                                                <constraint firstItem="LdB-9l-ZmI" firstAttribute="leading" secondItem="FM8-1O-Jui" secondAttribute="leadingMargin" id="yyV-Eg-lzL"/>
+                                                <constraint firstItem="15n-SH-dpU" firstAttribute="top" secondItem="FM8-1O-Jui" secondAttribute="topMargin" id="G31-L7-sNN"/>
+                                                <constraint firstItem="3FS-pV-8VO" firstAttribute="leading" secondItem="FM8-1O-Jui" secondAttribute="leadingMargin" id="MDt-W8-p5W"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="3FS-pV-8VO" secondAttribute="trailing" id="VMm-lF-a0f"/>
+                                                <constraint firstItem="15n-SH-dpU" firstAttribute="trailing" secondItem="FM8-1O-Jui" secondAttribute="trailingMargin" id="b5D-qb-pdf"/>
+                                                <constraint firstItem="3FS-pV-8VO" firstAttribute="top" secondItem="15n-SH-dpU" secondAttribute="bottom" id="gU0-Eg-ClO"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="3FS-pV-8VO" secondAttribute="bottom" id="tca-u9-LpY"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -97,6 +111,10 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Done" id="1oV-et-sEN"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="tweetCount" destination="15n-SH-dpU" id="3qk-qq-Sji"/>
+                        <outlet property="tweetTextView" destination="3FS-pV-8VO" id="osK-9k-OdW"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y5y-2y-IzV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

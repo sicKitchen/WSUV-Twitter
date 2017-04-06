@@ -12,17 +12,51 @@ class AddTweetTableViewController: UITableViewController, UITextFieldDelegate {
     
     
     
+    @IBOutlet weak var tweetTextView: UITextView!
+    @IBOutlet weak var tweetCount: UILabel!
+    
+    
+    
 
     //==== ADDED CODE =================================================
     @IBAction func cancel(_ sender: Any) {
         self.dismiss(animated: true, completion:nil)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tweetTextView.becomeFirstResponder()
+    }
+    
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        guard let text = textField.text else { return true }
+        let length = text.characters.count + string.characters.count - range.length
+        
+        // create an Integer of 55 - the length of your TextField.text to count down
+        let count = 55 - length
+        
+        // set the .text property of your UILabel to the live created String
+        tweetCount.text =  String(count)
+        
+        // if you want to limit to 55 charakters
+        // you need to return true and <= 55
+        
+        return length <= 55 // To just allow up to 55 characters
+    }
+    
+    
+    
+
+    
     
     
     //==== XCODE GENERATED CODE ========================================
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tweetCount.text = String(140)
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -38,6 +72,7 @@ class AddTweetTableViewController: UITableViewController, UITextFieldDelegate {
 
     // MARK: - Table view data source
 
+    /*
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 0
@@ -47,16 +82,18 @@ class AddTweetTableViewController: UITableViewController, UITextFieldDelegate {
         // #warning Incomplete implementation, return the number of rows
         return 0
     }
-
+    */
+    
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 
         // Configure the cell...
-
+       
         return cell
     }
     */
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -104,3 +141,21 @@ class AddTweetTableViewController: UITableViewController, UITextFieldDelegate {
     */
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
