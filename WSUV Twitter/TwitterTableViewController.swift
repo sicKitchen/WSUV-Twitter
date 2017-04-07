@@ -13,6 +13,14 @@ class TwitterTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(forName: kAddTweetNotification,object: nil,
+                                               queue: nil) { (note : Notification) -> Void in
+                                                if !self.refreshControl!.isRefreshing {
+                                                    self.refreshControl!.beginRefreshing()
+                                                    self.refreshTweets(self)
+                                                }
+        }
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -48,14 +56,14 @@ class TwitterTableViewController: UITableViewController {
                 case .success(let JSON):
                     print("succes with AF")
                     
-                    print(response.request!)  // original URL request
-                    print(response.response!) // HTTP URL response
-                    print(response.data!)     // server data
-                    print(response.result)   // result of response serialization
+                    //print(response.request!)  // original URL request
+                    //print(response.response!) // HTTP URL response
+                    //print(response.data!)     // server data
+                    //print(response.result)   // result of response serialization
                     
-                    if let JSON = response.result.value {
-                        print("JSON: \(JSON)")
-                    }
+                    //if let JSON = response.result.value {
+                    //    print("JSON: \(JSON)")
+                    //}
 
                     
                     
@@ -63,9 +71,40 @@ class TwitterTableViewController: UITableViewController {
                     
                     
                     let dict = JSON as! [String : AnyObject]
+                    // tweets now holds all the tweats from server
                     let tweets = dict["tweets"] as! [[String : AnyObject]]
                     // ... create a new Tweet object for each returned tweet dictionary
+                    var tweetDict = [Tweet]()
+                    for tweet in tweets {
+                        
+                        
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                        dateFormatter.timeZone = NSTimeZone(abbreviation: "PST")! as TimeZone
+                        let date = dateFormatter.date(from:tweet["time_stamp"] as! String)
+                        
+                        let tmpTweet = Tweet(tweet_id: tweet["tweet_id"] as! Int,
+                                             username: tweet["username"] as! String,
+                                             isdeleted: (tweet["isdeleted"] != nil),
+                                             tweet: tweet["tweet"] as! NSString,
+                                             Date: date! as NSDate)
+                        
+                        tweetDict.append(tmpTweet)
+                    }
+                    
                     // ... add new (sorted) tweets to appDelegate.tweets...
+                    
+                    for tweet in tweetDict {
+                        //print(tweet.tweet_id)
+                        //print(tweet.username)
+                        //print(tweet.isdeleted)
+                        //print(tweet.tweet)
+                        //print(tweet.Date)
+                        //print("")
+                        
+                        appDelegate.tweets.append(tweet)
+                    }
+                    
                     self.tableView.reloadData() // force table-view to be updated
                     self.refreshControl?.endRefreshing()
                 case .failure(let error):
@@ -97,28 +136,94 @@ class TwitterTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
-
+    
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        return appDelegate.tweets.count
     }
+    
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-        cell.textLabel?.numberOfLines = 0 // multiline label
-        //cell.textLabel?.attributedText = attributedStringForTweet(tweet)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
+        // Configure the cell...
+        //let tweet = appDelegate.tweets[indexPath.row]
+        
+        var tweets = appDelegate.tweets
+        tweets.reverse()
+        
+        let tweet = tweets[indexPath.row]
+        
+        cell.textLabel?.numberOfLines = 0 // multiline label
+        cell.textLabel?.attributedText = attributedStringForTweet(tweet)
         
         
         return cell
     }
     
     
+    lazy var tweetDateFormatter : DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
+        return dateFormatter
+    }()
+    
+    let tweetTitleAttributes = [
+        NSFontAttributeName : UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline),
+        NSForegroundColorAttributeName : UIColor.purple
+    ]
+    
+    lazy var tweetBodyAttributes : [String : AnyObject] = {
+        let textStyle = NSParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
+        textStyle.lineBreakMode = .byWordWrapping
+        textStyle.alignment = .left
+        let bodyAttributes = [
+            NSFontAttributeName : UIFont.preferredFont(forTextStyle: UIFontTextStyle.body),
+            NSForegroundColorAttributeName : UIColor.black,
+            NSParagraphStyleAttributeName : textStyle
+        ]
+        return bodyAttributes
+    }()
+    
+    var tweetAttributedStringMap : [Tweet : NSAttributedString] = [:]
+    
+    func attributedStringForTweet(_ tweet : Tweet) -> NSAttributedString {
+        let attributedString = tweetAttributedStringMap[tweet]
+        if let string = attributedString { // already stored?
+            return string
+        }
+        let dateString = tweetDateFormatter.string(from: tweet.Date as Date)
+        let title = String(format: "%@ - %@\n", tweet.username, dateString)
+        let tweetAttributedString = NSMutableAttributedString(string: title, attributes: tweetTitleAttributes)
+        let bodyAttributedString = NSAttributedString(string: tweet.tweet as String, attributes: tweetBodyAttributes)
+        tweetAttributedString.append(bodyAttributedString)
+        tweetAttributedStringMap[tweet] = tweetAttributedString
+        return tweetAttributedString
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    override func tableView(_ tableView: UITableView,
+                            estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
 
     /*
     // Override to support conditional editing of the table view.

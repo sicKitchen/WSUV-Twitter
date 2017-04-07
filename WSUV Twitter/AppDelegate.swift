@@ -8,12 +8,52 @@
 
 import UIKit
 
+let kAddTweetNotification = Notification.Name("AddTweetNotification")
 
+class Tweet: NSObject, NSCoding {
+    var tweet_id : Int
+    var username : String
+    var isdeleted : Bool
+    var tweet : NSString
+    var Date : NSDate
+    
+    init(tweet_id : Int, username : String, isdeleted : Bool, tweet : NSString, Date : NSDate){
+        self.tweet_id = tweet_id
+        self.username = username
+        self.isdeleted = isdeleted
+        self.tweet = tweet
+        self.Date = Date
+    }
+    
+    required convenience init(coder aDecoder: NSCoder) {
+        let tweet_id = aDecoder.decodeObject(forKey: "tweet_id") as! Int
+        let username = aDecoder.decodeObject(forKey: "username") as! String
+        //let isdeleted = aDecoder.decodeObject(forKey: "tweet_id") as! String
+        let isdeleted = aDecoder.decodeBool(forKey: "isdeleted")
+        let tweet = aDecoder.decodeObject(forKey: "tweet") as! NSString
+        let Date = aDecoder.decodeObject(forKey: "Date") as! NSDate
+        
+        self.init(tweet_id:tweet_id, username:username, isdeleted:isdeleted, tweet:tweet, Date:Date)
+            
+    
+    }
+    
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.tweet_id, forKey: "tweet_id")
+        aCoder.encode(self.username, forKey: "username")
+        aCoder.encode(self.isdeleted, forKey: "isdeleted")
+        aCoder.encode(self.tweet, forKey: "tweet")
+        aCoder.encode(self.Date, forKey: "Date")
+        
+    }
+}
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    var tweets = [Tweet]()
     
     func lastTweetDate() -> Date{
         var dc = DateComponents()
@@ -29,6 +69,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return date!
     }
+    
+    
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
