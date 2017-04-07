@@ -43,7 +43,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Root View Controller1" id="qpH-VF-buQ">
-                        <barButtonItem key="leftBarButtonItem" title="👤" id="xGd-Dx-C0H" userLabel="LogIn"/>
+                        <barButtonItem key="leftBarButtonItem" title="👤" id="xGd-Dx-C0H" userLabel="LogIn">
+                            <connections>
+                                <action selector="logIn:" destination="kRh-YQ-qPJ" id="vex-oG-HSD"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="suF-UG-Gsm">
                             <connections>
                                 <segue destination="EOe-qt-AFV" kind="presentation" id="GAF-ua-Pjm"/>

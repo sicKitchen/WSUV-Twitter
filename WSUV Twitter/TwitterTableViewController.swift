@@ -14,14 +14,15 @@ class TwitterTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(forName: kAddTweetNotification,object: nil,
-                                               queue: nil) { (note : Notification) -> Void in
-                                                if !self.refreshControl!.isRefreshing {
-                                                    self.refreshControl!.beginRefreshing()
-                                                    self.refreshTweets(self)
-                                                }
+        NotificationCenter.default.addObserver(forName: kAddTweetNotification,object: nil, queue: nil) { (note : Notification) -> Void in
+            if !self.refreshControl!.isRefreshing {
+                self.refreshControl!.beginRefreshing()
+                self.refreshTweets(self)
+            }
         }
-
+        
+        self.refreshTweets(self)
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -33,6 +34,34 @@ class TwitterTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    
+    @IBAction func logIn(_ sender: Any) {
+        let alertController = UIAlertController(title: "Login", message: "Please Log in", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Login", style: .default, handler: { _ in
+            let usernameTextField = alertController.textFields![0]
+            let passwordTextField = alertController.textFields![1]
+            // ... check for empty textfields
+            //self.loginUser(usernameTextField.text!, password: passwordTextField.text!)
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alertController.addTextField { (textField : UITextField) -> Void in
+            textField.placeholder = "Username"
+        }
+        alertController.addTextField { (textField : UITextField) -> Void in
+            textField.isSecureTextEntry = true
+            textField.placeholder = "Password"
+        }
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    
+    
+    
     
        
     @IBAction func refreshTweets(_ sender: AnyObject) {
