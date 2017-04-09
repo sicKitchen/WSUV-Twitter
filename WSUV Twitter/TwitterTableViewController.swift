@@ -5,6 +5,11 @@
 //  Created by Spencer Kitchen on 4/6/17.
 //  Copyright © 2017 wsu.vancouver. All rights reserved.
 //
+/*  Handles main view of twitter app. Can register a new user and log in from top left corner.
+    Once logged in, You can post a new tweet from the add button in the top right corner.
+    To refresh the tweet feed swipe down on the chat.
+*/
+
 
 import UIKit
 import Alamofire
@@ -35,35 +40,234 @@ class TwitterTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    
+    //===============================
+    // LogIn/Logout Button (Top left)
+    //===============================
     @IBAction func logIn(_ sender: Any) {
-        let alertController = UIAlertController(title: "Login", message: "Please Log in", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Login", style: .default, handler: { _ in
-            let usernameTextField = alertController.textFields![0]
-            let passwordTextField = alertController.textFields![1]
-            // ... check for empty textfields
-            //self.loginUser(usernameTextField.text!, password: passwordTextField.text!)
-        }))
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        // Logout Button---------
+        let alertController : UIAlertController
+        if appDelegate.LOGIN {
+            alertController = UIAlertController(title: "Logout", message: "Please Log out", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Logout", style: .default, handler: { _ in
+                //let usernameTextField = alertController.textFields![0]
+                //let passwordTextField = alertController.textFields![1]
+                //if usernameTextField.text != "" || passwordTextField.text != "" {
+                //    self.loginUser(username: usernameTextField.text!, password: passwordTextField.text!)
+                //    print (usernameTextField.text)
+                //    print (passwordTextField.text)
+                //}else {
+                //    print ("didnt enter anything -> handle later")
+                //}
+                print ("I wanna log out, call logout function")
+                self.logoutUser(username: appDelegate.USERNAME, password: appDelegate.PASSWORD)
+            }))
+        } else {
+            
+            // Login Button---------
+            alertController = UIAlertController(title: "Login", message: "Please Log in", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Login", style: .default, handler: { _ in
+                let usernameTextField = alertController.textFields![0]
+                let passwordTextField = alertController.textFields![1]
+                if usernameTextField.text != "" || passwordTextField.text != "" {
+                    self.loginUser(username: usernameTextField.text!, password: passwordTextField.text!)
+                    print (usernameTextField.text)
+                    print (passwordTextField.text)
+                }else {
+                    print ("didnt enter anything -> handle later")
+                }
+            }))
+        }
+        // Cancel Button
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alertController.addTextField { (textField : UITextField) -> Void in
-            textField.placeholder = "Username"
+        // TextFields (username, password)
+        if !appDelegate.LOGIN {
+            alertController.addTextField { (textField : UITextField) -> Void in
+                textField.placeholder = "Username"
+            }
+            alertController.addTextField { (textField : UITextField) -> Void in
+                textField.isSecureTextEntry = true
+                textField.placeholder = "Password"
+            }
+            
+            // Register Button
+            alertController.addAction(UIAlertAction(title: "Register", style: .default, handler: { _ in
+                let usernameTextField = alertController.textFields![0]
+                let passwordTextField = alertController.textFields![1]
+                if usernameTextField.text != "" || passwordTextField.text != "" {
+                    self.registerUser(username: usernameTextField.text!, password: passwordTextField.text!)
+                    print (usernameTextField.text)
+                    print (passwordTextField.text)
+                }else {
+                    print ("didnt enter anything -> handle later")
+                }
+            }))
         }
-        alertController.addTextField { (textField : UITextField) -> Void in
-            textField.isSecureTextEntry = true
-            textField.placeholder = "Password"
-        }
+        
         self.present(alertController, animated: true, completion: nil)
     }
+    //=======================
+    // Register New User Func
+    //=======================
+    func registerUser (username: String, password : String) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let kBaseURLString = "https://ezekiel.encs.vancouver.wsu.edu/~cs458/cgi-bin"
+        let urlString = kBaseURLString + "/register.cgi"
+        let parameters = [
+            "username" : username,  // username and password
+            "password" : password,  // obtained from user
+        ]
+        Alamofire.request(urlString, method: .post, parameters: parameters)
+            .responseJSON(completionHandler: {
+                response in
+                switch(response.result) {
+                case .success(let JSON):
+                    //print(response.request!)  // original URL request
+                    //print(response.response!) // HTTP URL response
+                    //print(response.data!)     // server data
+                    //print(response.result)   // result of response serialization
+                    
+                    //if let JSON = response.result.value {
+                    //    print("JSON: \(JSON)")
+                    //}
+                    
+                    let dict = JSON as! [String : AnyObject]
+                    let sessTok = dict["session_token"] as! String
+                    appDelegate.SESSIONTOKEN = sessTok
+                    break
+                    
+                case .failure(let error):
+                    print ("error: register")
+                    
+                    print(response.request!)  // original URL request
+                    print(response.response!) // HTTP URL response
+                    print(response.data!)     // server data
+                    print(response.result)   // result of response serialization
+                    
+                    if let JSON = response.result.value {
+                        print("JSON: \(JSON)")
+                    }
+                    // inform user of error
+                    break
+                }
+            })
+    }
     
+    //================
+    // User LogIn Func
+    //================
+    func loginUser(username: String, password : String) {
+        print ("from login functiuon")
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let kBaseURLString = "https://ezekiel.encs.vancouver.wsu.edu/~cs458/cgi-bin"
+        let urlString = kBaseURLString + "/login.cgi"
+        let parameters = [
+            "username" : username,  // username and password
+            "password" : password,  // obtained from user
+            "action" : "login"
+        ]
+        Alamofire.request(urlString, method: .post, parameters: parameters)
+            .responseJSON(completionHandler: {
+                response in
+                switch(response.result) {
+                    case .success(let JSON):
+                        print(response.request!)  // original URL request
+                        print(response.response!) // HTTP URL response
+                        print(response.data!)     // server data
+                        print(response.result)   // result of response serialization
+                    
+                        if let JSON = response.result.value {
+                            print("JSON: \(JSON)")
+                        }
+                    
+                        let dict = JSON as! [String : AnyObject]
+                        let sessTok = dict["session_token"] as! String
+                        // save username
+                        appDelegate.USERNAME = parameters["username"]!
+                        // save password and session_token in keychain
+                        appDelegate.PASSWORD = parameters["password"]!
+                        appDelegate.SESSIONTOKEN = sessTok
+                        // enable "add tweet" button
+                        self.navigationItem.rightBarButtonItem?.isEnabled = true
+                        // change title of controller to show username, etc...
+                        self.title = appDelegate.USERNAME
+                        appDelegate.LOGIN = true
+                        break
+                    case .failure(let error):
+                        print ("error: login")
+                        
+                        print(response.request!)  // original URL request
+                        print(response.response!) // HTTP URL response
+                        print(response.data!)     // server data
+                        print(response.result)   // result of response serialization
+                        
+                        if let JSON = response.result.value {
+                            print("JSON: \(JSON)")
+                        }
+                        // inform user of error
+                        break
+                }
+        })
+    }
     
+    func logoutUser (username: String, password : String){
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let kBaseURLString = "https://ezekiel.encs.vancouver.wsu.edu/~cs458/cgi-bin"
+        let urlString = kBaseURLString + "/login.cgi"
+        let parameters = [
+            "username" : username,  // username and password
+            "password" : password,  // obtained from user
+            "action" : "logout"
+        ]
+        Alamofire.request(urlString, method: .post, parameters: parameters)
+            .responseJSON(completionHandler: {
+                response in
+                switch(response.result) {
+                case .success(let JSON):
+                    print(response.request!)  // original URL request
+                    print(response.response!) // HTTP URL response
+                    print(response.data!)     // server data
+                    print(response.result)   // result of response serialization
+                    
+                    if let JSON = response.result.value {
+                        print("JSON: \(JSON)")
+                    }
+                    
+                    let dict = JSON as! [String : AnyObject]
+                    let sessTok = dict["session_token"] as! String
+                    // reset username
+                    appDelegate.USERNAME = ""
+                    // reset password and session_token in keychain
+                    appDelegate.PASSWORD = ""
+                    appDelegate.SESSIONTOKEN = sessTok
+                    // disable "add tweet" button
+                    self.navigationItem.rightBarButtonItem?.isEnabled = false
+                    // change title of controller to show Guest, etc...
+                    self.title = "Guest"
+                    appDelegate.LOGIN = false
+                    break
+                case .failure(let error):
+                    print ("error: login")
+                    
+                    print(response.request!)  // original URL request
+                    print(response.response!) // HTTP URL response
+                    print(response.data!)     // server data
+                    print(response.result)   // result of response serialization
+                    
+                    if let JSON = response.result.value {
+                        print("JSON: \(JSON)")
+                    }
+                    // inform user of error
+                    break
+                }
+            })
+    }
     
-    
-    
-    
-    
-    
-       
+    //==================================
+    // Regfresh Tweets func (swipe down)
+    //==================================
     @IBAction func refreshTweets(_ sender: AnyObject) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
