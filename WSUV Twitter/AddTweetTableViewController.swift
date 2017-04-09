@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class AddTweetTableViewController: UITableViewController, UITextViewDelegate {
     
@@ -23,6 +24,66 @@ class AddTweetTableViewController: UITableViewController, UITextViewDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         tweetTextView.becomeFirstResponder()
+    }
+    
+    @IBAction func done(_ sender: Any) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        // Make sure user entered something
+        if tweetTextView.text != "" {
+            self.addTweet(username: appDelegate.USERNAME,
+                          session_token: appDelegate.SESSIONTOKEN,
+                          tweet: tweetTextView.text)
+        }
+        
+    }
+    
+    // Add tweet Func
+    func addTweet(username: String, session_token: String, tweet: String){
+        let kBaseURLString = "https://ezekiel.encs.vancouver.wsu.edu/~cs458/cgi-bin"
+        let urlString = kBaseURLString + "/add-tweet.cgi"
+        let parameters = [
+            "username" : username,
+            "session_token" : session_token,
+            "tweet" : tweet
+        ]
+        Alamofire.request(urlString, method: .post, parameters: parameters)
+            .responseJSON(completionHandler: {
+                response in
+                switch(response.result) {
+                case .success(let JSON):
+                    //print(response.request!)  // original URL request
+                    //print(response.response!) // HTTP URL response
+                    //print(response.data!)     // server data
+                    //print(response.result)   // result of response serialization
+                    
+                    //if let JSON = response.result.value {
+                    //    print("JSON: \(JSON)")
+                    //}
+                    
+                    let dict = JSON as! [String : AnyObject]
+                    let sessTok = dict["tweet"] as! String
+                    //print (sessTok)
+                    self.dismiss(animated: true, completion: {
+                        NotificationCenter.default.post(name: kAddTweetNotification, object: nil)
+                    })
+                    break
+                    
+                case .failure(let error):
+                    print ("error: register")
+                    
+                    print(response.request!)  // original URL request
+                    print(response.response!) // HTTP URL response
+                    print(response.data!)     // server data
+                    print(response.result)   // result of response serialization
+                    
+                    if let JSON = response.result.value {
+                        print("JSON: \(JSON)")
+                    }
+                    // inform user of error
+                    break
+                }
+            })
+
     }
     
     // Responds to when tweetTextView changes, shows character count in UILable

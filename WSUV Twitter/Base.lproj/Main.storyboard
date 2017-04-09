@@ -138,7 +138,11 @@
                                 <action selector="cancel:" destination="ruH-XM-5Ca" id="guH-ld-Gpx"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Done" id="1oV-et-sEN"/>
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="1oV-et-sEN">
+                            <connections>
+                                <action selector="done:" destination="ruH-XM-5Ca" id="Aaw-ZW-5z5"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="tweetCount" destination="15n-SH-dpU" id="3qk-qq-Sji"/>

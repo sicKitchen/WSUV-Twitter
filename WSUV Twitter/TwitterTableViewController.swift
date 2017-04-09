@@ -81,6 +81,7 @@ class TwitterTableViewController: UITableViewController {
         }
         // Cancel Button
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
         // TextFields (username, password)
         if !appDelegate.LOGIN {
             alertController.addTextField { (textField : UITextField) -> Void in
@@ -212,6 +213,9 @@ class TwitterTableViewController: UITableViewController {
         })
     }
     
+    //=================
+    // User LogOut Func
+    //=================
     func logoutUser (username: String, password : String){
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let kBaseURLString = "https://ezekiel.encs.vancouver.wsu.edu/~cs458/cgi-bin"
