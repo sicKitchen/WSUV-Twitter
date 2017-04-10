@@ -8,16 +8,17 @@
 
 import UIKit
 
+// Watches for calls to refresh table
 let kAddTweetNotification = Notification.Name("AddTweetNotification")
 
 class Tweet: NSObject, NSCoding {
     var tweet_id : Int
     var username : String
-    var isdeleted : Bool
+    var isdeleted : Int
     var tweet : NSString
     var Date : NSDate
     
-    init(tweet_id : Int, username : String, isdeleted : Bool, tweet : NSString, Date : NSDate){
+    init(tweet_id : Int, username : String, isdeleted : Int, tweet : NSString, Date : NSDate){
         self.tweet_id = tweet_id
         self.username = username
         self.isdeleted = isdeleted
@@ -28,14 +29,12 @@ class Tweet: NSObject, NSCoding {
     required convenience init(coder aDecoder: NSCoder) {
         let tweet_id = aDecoder.decodeObject(forKey: "tweet_id") as! Int
         let username = aDecoder.decodeObject(forKey: "username") as! String
-        //let isdeleted = aDecoder.decodeObject(forKey: "tweet_id") as! String
-        let isdeleted = aDecoder.decodeBool(forKey: "isdeleted")
+        let isdeleted = aDecoder.decodeObject(forKey: "isdeleted") as! Int
+        //let isdeleted = aDecoder.decodeBool(forKey: "isdeleted")
         let tweet = aDecoder.decodeObject(forKey: "tweet") as! NSString
         let Date = aDecoder.decodeObject(forKey: "Date") as! NSDate
         
         self.init(tweet_id:tweet_id, username:username, isdeleted:isdeleted, tweet:tweet, Date:Date)
-            
-    
     }
     
     func encode(with aCoder: NSCoder) {
@@ -44,7 +43,6 @@ class Tweet: NSObject, NSCoding {
         aCoder.encode(self.isdeleted, forKey: "isdeleted")
         aCoder.encode(self.tweet, forKey: "tweet")
         aCoder.encode(self.Date, forKey: "Date")
-        
     }
 }
 
@@ -54,12 +52,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     var tweets = [Tweet]()
-    
     var USERNAME : String = ""
     var PASSWORD : String = ""
     var SESSIONTOKEN : String = "0"
     var LOGIN : Bool = false
-  
     
     func lastTweetDate() -> Date{
         var dc = DateComponents()
@@ -76,9 +72,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return date!
     }
     
-    
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         return true
@@ -105,7 +98,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
+    
 }
 

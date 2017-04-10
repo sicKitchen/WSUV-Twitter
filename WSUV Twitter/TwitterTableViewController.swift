@@ -25,7 +25,7 @@ class TwitterTableViewController: UITableViewController {
                 self.refreshTweets(self)
             }
         }
-        
+        // Calls first refresh for us
         self.refreshTweets(self)
         
         // Uncomment the following line to preserve selection between presentations
@@ -51,16 +51,6 @@ class TwitterTableViewController: UITableViewController {
         if appDelegate.LOGIN {
             alertController = UIAlertController(title: "Logout", message: "Please Log out", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "Logout", style: .default, handler: { _ in
-                //let usernameTextField = alertController.textFields![0]
-                //let passwordTextField = alertController.textFields![1]
-                //if usernameTextField.text != "" || passwordTextField.text != "" {
-                //    self.loginUser(username: usernameTextField.text!, password: passwordTextField.text!)
-                //    print (usernameTextField.text)
-                //    print (passwordTextField.text)
-                //}else {
-                //    print ("didnt enter anything -> handle later")
-                //}
-                print ("I wanna log out, call logout function")
                 self.logoutUser(username: appDelegate.USERNAME, password: appDelegate.PASSWORD)
             }))
         } else {
@@ -72,8 +62,8 @@ class TwitterTableViewController: UITableViewController {
                 let passwordTextField = alertController.textFields![1]
                 if usernameTextField.text != "" || passwordTextField.text != "" {
                     self.loginUser(username: usernameTextField.text!, password: passwordTextField.text!)
-                    print (usernameTextField.text)
-                    print (passwordTextField.text)
+                    //Pprint (usernameTextField.text)
+                    //Pprint (passwordTextField.text)
                 }else {
                     print ("didnt enter anything -> handle later")
                 }
@@ -98,14 +88,13 @@ class TwitterTableViewController: UITableViewController {
                 let passwordTextField = alertController.textFields![1]
                 if usernameTextField.text != "" || passwordTextField.text != "" {
                     self.registerUser(username: usernameTextField.text!, password: passwordTextField.text!)
-                    print (usernameTextField.text)
-                    print (passwordTextField.text)
+                    //Pprint (usernameTextField.text)
+                    //Pprint (passwordTextField.text)
                 }else {
                     print ("didnt enter anything -> handle later")
                 }
             }))
         }
-        
         self.present(alertController, animated: true, completion: nil)
     }
     //=======================
@@ -159,7 +148,6 @@ class TwitterTableViewController: UITableViewController {
     // User LogIn Func
     //================
     func loginUser(username: String, password : String) {
-        print ("from login functiuon")
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let kBaseURLString = "https://ezekiel.encs.vancouver.wsu.edu/~cs458/cgi-bin"
@@ -174,14 +162,14 @@ class TwitterTableViewController: UITableViewController {
                 response in
                 switch(response.result) {
                     case .success(let JSON):
-                        print(response.request!)  // original URL request
-                        print(response.response!) // HTTP URL response
-                        print(response.data!)     // server data
-                        print(response.result)   // result of response serialization
+                        //print(response.request!)  // original URL request
+                        //print(response.response!) // HTTP URL response
+                        //print(response.data!)     // server data
+                        //print(response.result)   // result of response serialization
                     
-                        if let JSON = response.result.value {
-                            print("JSON: \(JSON)")
-                        }
+                        //if let JSON = response.result.value {
+                        //    print("JSON: \(JSON)")
+                        //}
                     
                         let dict = JSON as! [String : AnyObject]
                         let sessTok = dict["session_token"] as! String
@@ -196,6 +184,7 @@ class TwitterTableViewController: UITableViewController {
                         self.title = appDelegate.USERNAME
                         appDelegate.LOGIN = true
                         break
+                    
                     case .failure(let error):
                         print ("error: login")
                         
@@ -230,14 +219,14 @@ class TwitterTableViewController: UITableViewController {
                 response in
                 switch(response.result) {
                 case .success(let JSON):
-                    print(response.request!)  // original URL request
-                    print(response.response!) // HTTP URL response
-                    print(response.data!)     // server data
-                    print(response.result)   // result of response serialization
+                    //print(response.request!)  // original URL request
+                    //print(response.response!) // HTTP URL response
+                    //print(response.data!)     // server data
+                    //print(response.result)   // result of response serialization
                     
-                    if let JSON = response.result.value {
-                        print("JSON: \(JSON)")
-                    }
+                    //if let JSON = response.result.value {
+                    //    print("JSON: \(JSON)")
+                    //}
                     
                     let dict = JSON as! [String : AnyObject]
                     let sessTok = dict["session_token"] as! String
@@ -291,7 +280,7 @@ class TwitterTableViewController: UITableViewController {
             .responseJSON {response in
                 switch(response.result) {
                 case .success(let JSON):
-                    print("succes with AF")
+                    //print("succes with AF")
                     
                     //print(response.request!)  // original URL request
                     //print(response.response!) // HTTP URL response
@@ -301,11 +290,6 @@ class TwitterTableViewController: UITableViewController {
                     //if let JSON = response.result.value {
                     //    print("JSON: \(JSON)")
                     //}
-
-                    
-                    
-                    
-                    
                     
                     let dict = JSON as! [String : AnyObject]
                     // tweets now holds all the tweats from server
@@ -322,7 +306,7 @@ class TwitterTableViewController: UITableViewController {
                         
                         let tmpTweet = Tweet(tweet_id: tweet["tweet_id"] as! Int,
                                              username: tweet["username"] as! String,
-                                             isdeleted: (tweet["isdeleted"] != nil),
+                                             isdeleted: tweet["isdeleted"] as! Int,
                                              tweet: tweet["tweet"] as! NSString,
                                              Date: date! as NSDate)
                         
@@ -340,8 +324,10 @@ class TwitterTableViewController: UITableViewController {
                         //print(tweet.Date)
                         //print("")
                         
+                        if tweet.isdeleted == 0{
+                            appDelegate.tweets.append(tweet)
+                        }
                         
-                        appDelegate.tweets.append(tweet)
                     }
                     
                     self.tableView.reloadData() // force table-view to be updated
@@ -370,14 +356,13 @@ class TwitterTableViewController: UITableViewController {
     
     
     
-
-    // MARK: - Table view data source
-
+    //================
+    // TableView Setup
+    //================
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-    
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
@@ -385,28 +370,22 @@ class TwitterTableViewController: UITableViewController {
         return appDelegate.tweets.count
     }
     
-
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        
         // Configure the cell...
-        //let tweet = appDelegate.tweets[indexPath.row]
-        
         var tweets = appDelegate.tweets
-        //tweets.reverse()
-        
         let tweet = tweets[indexPath.row]
         
         cell.textLabel?.numberOfLines = 0 // multiline label
         cell.textLabel?.attributedText = attributedStringForTweet(tweet)
         
-        
         return cell
     }
     
-    
+    //==========================
+    // Pretty Print to TableView
+    //==========================
     lazy var tweetDateFormatter : DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
@@ -447,14 +426,6 @@ class TwitterTableViewController: UITableViewController {
         return tweetAttributedString
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
@@ -463,28 +434,23 @@ class TwitterTableViewController: UITableViewController {
                             estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
-
     
+    //======================
+    // Delete from tableView
+    //======================
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
     
-
-    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            print("delete me")
-            
-            
-            
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            print ("this is the tweet id for selected cell")
-            print (appDelegate.tweets[indexPath.row].tweet_id)
-            print (appDelegate.tweets[indexPath.row].tweet)
+            //print (appDelegate.tweets[indexPath.row].tweet_id)
+            //print (appDelegate.tweets[indexPath.row].tweet)
             
             // Tweet came from me
             if appDelegate.tweets[indexPath.row].username == appDelegate.USERNAME {
@@ -497,17 +463,11 @@ class TwitterTableViewController: UITableViewController {
                 tableView.deleteRows(at: [indexPath], with: .fade)
                 self.tableView.isEditing = false
 
-                
             } else {
                 print ("Not my tweet")
                 self.tableView.isEditing = false
-                
             }
-            
-            
-            
-            
-            
+
         }
         
         //else if editingStyle == .insert {
@@ -515,6 +475,9 @@ class TwitterTableViewController: UITableViewController {
         //}
     }
     
+    //==================
+    // Delete Tweet Func
+    //==================
     func deleteTweet(username: String, session_token: String, tweet_id: Int) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let kBaseURLString = "https://ezekiel.encs.vancouver.wsu.edu/~cs458/cgi-bin"
@@ -524,7 +487,6 @@ class TwitterTableViewController: UITableViewController {
             "session_token" : session_token,
             "tweet_id" : tweet_id
         ] as [String : Any]
-        print (parameters)
         Alamofire.request(urlString, method: .post, parameters: parameters)
             .responseJSON(completionHandler: {
                 response in
@@ -540,11 +502,7 @@ class TwitterTableViewController: UITableViewController {
                     //}
                     
                     let dict = JSON as! [String : AnyObject]
-                    print (dict)
-                    
-                    //self.dismiss(animated: true, completion: {
-                    //    NotificationCenter.default.post(name: kAddTweetNotification, object: nil)
-                    //})
+                    //print (dict)
                     
                     break
                     

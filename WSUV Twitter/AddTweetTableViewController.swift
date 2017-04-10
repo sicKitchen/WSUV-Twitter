@@ -14,9 +14,9 @@ class AddTweetTableViewController: UITableViewController, UITextViewDelegate {
     @IBOutlet weak var tweetTextView: UITextView!
     @IBOutlet weak var tweetCount: UILabel!
     
-
-    //==== ADDED CODE =================================================
+    //==============
     // Cancel button
+    //==============
     @IBAction func cancel(_ sender: Any) {
         self.dismiss(animated: true, completion:nil)
     }
@@ -26,6 +26,9 @@ class AddTweetTableViewController: UITableViewController, UITextViewDelegate {
         tweetTextView.becomeFirstResponder()
     }
     
+    //============
+    // Done button
+    //============
     @IBAction func done(_ sender: Any) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         // Make sure user entered something
@@ -34,10 +37,11 @@ class AddTweetTableViewController: UITableViewController, UITextViewDelegate {
                           session_token: appDelegate.SESSIONTOKEN,
                           tweet: tweetTextView.text)
         }
-        
     }
     
+    //===============
     // Add tweet Func
+    //===============
     func addTweet(username: String, session_token: String, tweet: String){
         let kBaseURLString = "https://ezekiel.encs.vancouver.wsu.edu/~cs458/cgi-bin"
         let urlString = kBaseURLString + "/add-tweet.cgi"
@@ -86,7 +90,10 @@ class AddTweetTableViewController: UITableViewController, UITextViewDelegate {
 
     }
     
-    // Responds to when tweetTextView changes, shows character count in UILable
+    //=======================================
+    // Responds to when tweetTextView changes
+    // Shows character count in UILabel
+    //=======================================
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let MAX = 140
         let length = textView.text.characters.count + text.characters.count - range.length
@@ -100,12 +107,8 @@ class AddTweetTableViewController: UITableViewController, UITextViewDelegate {
         return true
     }
     
-    
-        
-    //==== XCODE GENERATED CODE ========================================
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         tweetTextView.delegate = self
         
         // Set the start of tweet to 0 out of 140 characters
