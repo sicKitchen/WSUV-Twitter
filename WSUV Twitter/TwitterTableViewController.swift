@@ -65,7 +65,11 @@ class TwitterTableViewController: UITableViewController {
                     //Pprint (usernameTextField.text)
                     //Pprint (passwordTextField.text)
                 }else {
-                    print ("didnt enter anything -> handle later")
+                    let alert = UIAlertController(title: "Missing Text Fields",
+                                                  message: "Please provide username/password and select Register to sign up",
+                                                  preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
                 }
             }))
         }
@@ -91,7 +95,11 @@ class TwitterTableViewController: UITableViewController {
                     //Pprint (usernameTextField.text)
                     //Pprint (passwordTextField.text)
                 }else {
-                    print ("didnt enter anything -> handle later")
+                    let alert = UIAlertController(title: "Missing Text Fields",
+                                                  message: "Please provide username/password to sign up",
+                                                  preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
                 }
             }))
         }
@@ -128,17 +136,43 @@ class TwitterTableViewController: UITableViewController {
                     break
                     
                 case .failure(let error):
-                    print ("error: register")
+                    // Log to console
+                    let statusCode = response.response!.statusCode
+                    print("ERROR: \(statusCode)")
+                    print (error)
+                    print ()
                     
-                    print(response.request!)  // original URL request
-                    print(response.response!) // HTTP URL response
-                    print(response.data!)     // server data
-                    print(response.result)   // result of response serialization
-                    
-                    if let JSON = response.result.value {
-                        print("JSON: \(JSON)")
-                    }
                     // inform user of error
+                    switch (statusCode) {
+                    case 500:
+                        let alert = UIAlertController(title: "Internal Server Error",
+                                                      message: "Please try again later",
+                                                      preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                        break
+                        
+                    case 400:
+                        let alert = UIAlertController(title: "Missing Text Fields",
+                                                      message: "Please provide username/password to sign up",
+                                                      preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                        break
+                        
+                    case 409:
+                        let alert = UIAlertController(title: "Username Already Exists",
+                                                      message: "Please try a new username/password",
+                                                      preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                        break
+                        
+                    default:
+                        
+                        break
+                    }
+                    
                     break
                 }
             })
@@ -186,17 +220,51 @@ class TwitterTableViewController: UITableViewController {
                         break
                     
                     case .failure(let error):
-                        print ("error: login")
+                        // Log to console
+                        let statusCode = response.response!.statusCode
+                        print("ERROR: \(statusCode)")
+                        print (error)
+                        print ()
                         
-                        print(response.request!)  // original URL request
-                        print(response.response!) // HTTP URL response
-                        print(response.data!)     // server data
-                        print(response.result)   // result of response serialization
-                        
-                        if let JSON = response.result.value {
-                            print("JSON: \(JSON)")
-                        }
                         // inform user of error
+                        switch (statusCode) {
+                        case 500:
+                            let alert = UIAlertController(title: "Internal Server Error",
+                                                          message: "Please try again later",
+                                                          preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
+                            break
+                            
+                        case 400:
+                            let alert = UIAlertController(title: "Missing Text Fields",
+                                                          message: "Please provide username/password to sign up",
+                                                          preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
+                            break
+                            
+                        case 401:
+                            let alert = UIAlertController(title: "Wrong Password",
+                                                          message: "Please re-enter password",
+                                                          preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
+                            break
+                            
+                        case 404:
+                            let alert = UIAlertController(title: "Wrong Username",
+                                                          message: "Please re-enter username",
+                                                          preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
+                            break
+                            
+                        default:
+                            
+                            break
+                        }
+                        
                         break
                 }
         })
@@ -454,7 +522,6 @@ class TwitterTableViewController: UITableViewController {
             
             // Tweet came from me
             if appDelegate.tweets[indexPath.row].username == appDelegate.USERNAME {
-                print ("my tweet")
                 self.deleteTweet(username: appDelegate.USERNAME,
                                  session_token: appDelegate.SESSIONTOKEN,
                                  tweet_id: appDelegate.tweets[indexPath.row].tweet_id)
@@ -464,8 +531,13 @@ class TwitterTableViewController: UITableViewController {
                 self.tableView.isEditing = false
 
             } else {
-                print ("Not my tweet")
                 self.tableView.isEditing = false
+                let alert = UIAlertController(title: "Restricted",
+                                              message: "Must be Registered User to delete tweets",
+                                              preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                
             }
 
         }
