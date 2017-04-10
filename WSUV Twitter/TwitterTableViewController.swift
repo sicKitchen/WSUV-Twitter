@@ -330,7 +330,8 @@ class TwitterTableViewController: UITableViewController {
                     }
                     
                     // ... add new (sorted) tweets to appDelegate.tweets...
-                    
+                    tweetDict.reverse()
+                    appDelegate.tweets.removeAll()
                     for tweet in tweetDict {
                         //print(tweet.tweet_id)
                         //print(tweet.username)
@@ -338,6 +339,7 @@ class TwitterTableViewController: UITableViewController {
                         //print(tweet.tweet)
                         //print(tweet.Date)
                         //print("")
+                        
                         
                         appDelegate.tweets.append(tweet)
                     }
@@ -393,7 +395,7 @@ class TwitterTableViewController: UITableViewController {
         //let tweet = appDelegate.tweets[indexPath.row]
         
         var tweets = appDelegate.tweets
-        tweets.reverse()
+        //tweets.reverse()
         
         let tweet = tweets[indexPath.row]
         
@@ -462,25 +464,110 @@ class TwitterTableViewController: UITableViewController {
         return UITableViewAutomaticDimension
     }
 
-    /*
+    
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
+    
 
-    /*
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
+            print("delete me")
+            
+            
+            
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            print ("this is the tweet id for selected cell")
+            print (appDelegate.tweets[indexPath.row].tweet_id)
+            print (appDelegate.tweets[indexPath.row].tweet)
+            
+            // Tweet came from me
+            if appDelegate.tweets[indexPath.row].username == appDelegate.USERNAME {
+                print ("my tweet")
+                self.deleteTweet(username: appDelegate.USERNAME,
+                                 session_token: appDelegate.SESSIONTOKEN,
+                                 tweet_id: appDelegate.tweets[indexPath.row].tweet_id)
+                
+                appDelegate.tweets.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                self.tableView.isEditing = false
+
+                
+            } else {
+                print ("Not my tweet")
+                self.tableView.isEditing = false
+                
+            }
+            
+            
+            
+            
+            
+        }
+        
+        //else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        //}
     }
-    */
+    
+    func deleteTweet(username: String, session_token: String, tweet_id: Int) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let kBaseURLString = "https://ezekiel.encs.vancouver.wsu.edu/~cs458/cgi-bin"
+        let urlString = kBaseURLString + "/del-tweet.cgi"
+        let parameters = [
+            "username" : username,
+            "session_token" : session_token,
+            "tweet_id" : tweet_id
+        ] as [String : Any]
+        print (parameters)
+        Alamofire.request(urlString, method: .post, parameters: parameters)
+            .responseJSON(completionHandler: {
+                response in
+                switch(response.result) {
+                case .success(let JSON):
+                    //print(response.request!)  // original URL request
+                    //print(response.response!) // HTTP URL response
+                    //print(response.data!)     // server data
+                    //print(response.result)   // result of response serialization
+                    
+                    //if let JSON = response.result.value {
+                    //    print("JSON: \(JSON)")
+                    //}
+                    
+                    let dict = JSON as! [String : AnyObject]
+                    print (dict)
+                    
+                    //self.dismiss(animated: true, completion: {
+                    //    NotificationCenter.default.post(name: kAddTweetNotification, object: nil)
+                    //})
+                    
+                    break
+                    
+                case .failure(let error):
+                    print ("error: register")
+                    
+                    print(response.request!)  // original URL request
+                    print(response.response!) // HTTP URL response
+                    print(response.data!)     // server data
+                    print(response.result)   // result of response serialization
+                    
+                    if let JSON = response.result.value {
+                        print("JSON: \(JSON)")
+                    }
+                    // inform user of error
+                   
+                    break
+                }
+                
+            })
+
+    }
+    
 
     /*
     // Override to support rearranging the table view.

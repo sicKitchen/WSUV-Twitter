@@ -59,6 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var PASSWORD : String = ""
     var SESSIONTOKEN : String = "0"
     var LOGIN : Bool = false
+  
     
     func lastTweetDate() -> Date{
         var dc = DateComponents()
