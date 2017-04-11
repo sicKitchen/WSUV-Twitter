@@ -14,7 +14,7 @@
 import UIKit
 import Alamofire
 
-let DEBUG = true
+let DEBUG = false
 
 class TwitterTableViewController: UITableViewController {
 
@@ -97,6 +97,7 @@ class TwitterTableViewController: UITableViewController {
                 let passwordTextField = alertController.textFields![1]
                 if usernameTextField.text != "" || passwordTextField.text != "" {
                     self.registerUser(username: usernameTextField.text!, password: passwordTextField.text!)
+                    
                 }else {
                     let alert = UIAlertController(title: "Missing Text Fields",
                                                   message: "Please provide username/password to sign up",
@@ -132,6 +133,13 @@ class TwitterTableViewController: UITableViewController {
                         print("SUCCESS: session token - \(sessTok)")
                     }
                     
+                    let alert = UIAlertController(title: "Sign-Up Completed!",
+                                                  message: "You may now login with your username/password",
+                                                  preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    self.refreshControl?.endRefreshing()
+                    
                     break
                     
                 case .failure(let error):
@@ -149,6 +157,7 @@ class TwitterTableViewController: UITableViewController {
                                                       preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
                         self.present(alert, animated: true, completion: nil)
+                        self.refreshControl?.endRefreshing()
                         break
                         
                     case 400:
@@ -157,6 +166,7 @@ class TwitterTableViewController: UITableViewController {
                                                       preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
                         self.present(alert, animated: true, completion: nil)
+                        self.refreshControl?.endRefreshing()
                         break
                         
                     case 409:
@@ -165,6 +175,7 @@ class TwitterTableViewController: UITableViewController {
                                                       preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
                         self.present(alert, animated: true, completion: nil)
+                        self.refreshControl?.endRefreshing()
                         break
                         
                     default:
