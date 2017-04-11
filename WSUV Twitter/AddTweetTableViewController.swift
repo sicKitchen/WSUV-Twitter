@@ -73,7 +73,11 @@ class AddTweetTableViewController: UITableViewController, UITextViewDelegate {
                     
                     let dict = JSON as! [String : AnyObject]
                     let sessTok = dict["tweet"] as! String
-                    //print (sessTok)
+                    
+                    if DEBUG {
+                        print ("SUCCESS: tweet content - \(sessTok)")
+                    }
+                    
                     self.dismiss(animated: true, completion: {
                         NotificationCenter.default.post(name: kAddTweetNotification, object: nil)
                     })

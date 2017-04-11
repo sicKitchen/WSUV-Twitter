@@ -14,6 +14,8 @@
 import UIKit
 import Alamofire
 
+let DEBUG = true
+
 class TwitterTableViewController: UITableViewController {
 
     override func viewDidLoad() {
@@ -27,34 +29,7 @@ class TwitterTableViewController: UITableViewController {
         }
         // Calls first refresh for us
         self.refreshTweets(self)
-        
-        
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        // New item
-        let newQuery = SAMKeychainQuery()
-        newQuery.password = "testing"
-        newQuery.service = appDelegate.kWazzuTwitterPassword
-        newQuery.account = "test"
-        try! newQuery.save()
-        
-        // Look up
-        let lookupQuery = SAMKeychainQuery()
-        lookupQuery.service = appDelegate.kWazzuTwitterPassword
-        lookupQuery.account = "test"
-        try! lookupQuery.fetch()
-        
-        print(lookupQuery.password)
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+    
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -79,15 +54,10 @@ class TwitterTableViewController: UITableViewController {
             alertController = UIAlertController(title: "Logout", message: "Please Log out", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "Logout", style: .default, handler: { _ in
                 
+                let SSpass = appDelegate.getSSKeychain(account: appDelegate.USERNAME,
+                                          forService: appDelegate.kWazzuTwitterPassword)
                 
-                // Look up
-                let lookupQuery = SAMKeychainQuery()
-                lookupQuery.service = appDelegate.kWazzuTwitterPassword
-                lookupQuery.account = appDelegate.USERNAME
-                try! lookupQuery.fetch()
-                
-                
-                self.logoutUser(username: appDelegate.USERNAME, password: lookupQuery.password!)
+                self.logoutUser(username: appDelegate.USERNAME, password: SSpass.password!)
                 //self.logoutUser(username: appDelegate.USERNAME, password: appDelegate.PASSWORD)
             }))
         } else {
@@ -99,8 +69,6 @@ class TwitterTableViewController: UITableViewController {
                 let passwordTextField = alertController.textFields![1]
                 if usernameTextField.text != "" || passwordTextField.text != "" {
                     self.loginUser(username: usernameTextField.text!, password: passwordTextField.text!)
-                    //Pprint (usernameTextField.text)
-                    //Pprint (passwordTextField.text)
                 }else {
                     let alert = UIAlertController(title: "Missing Text Fields",
                                                   message: "Please provide username/password and select Register to sign up",
@@ -129,8 +97,6 @@ class TwitterTableViewController: UITableViewController {
                 let passwordTextField = alertController.textFields![1]
                 if usernameTextField.text != "" || passwordTextField.text != "" {
                     self.registerUser(username: usernameTextField.text!, password: passwordTextField.text!)
-                    //Pprint (usernameTextField.text)
-                    //Pprint (passwordTextField.text)
                 }else {
                     let alert = UIAlertController(title: "Missing Text Fields",
                                                   message: "Please provide username/password to sign up",
@@ -147,7 +113,6 @@ class TwitterTableViewController: UITableViewController {
     // Register New User Func
     //=======================
     func registerUser (username: String, password : String) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let kBaseURLString = "https://ezekiel.encs.vancouver.wsu.edu/~cs458/cgi-bin"
         let urlString = kBaseURLString + "/register.cgi"
         let parameters = [
@@ -159,25 +124,14 @@ class TwitterTableViewController: UITableViewController {
                 response in
                 switch(response.result) {
                 case .success(let JSON):
-                    //print(response.request!)  // original URL request
-                    //print(response.response!) // HTTP URL response
-                    //print(response.data!)     // server data
-                    //print(response.result)   // result of response serialization
-                    
-                    //if let JSON = response.result.value {
-                    //    print("JSON: \(JSON)")
-                    //}
-                    
+                
                     let dict = JSON as! [String : AnyObject]
                     let sessTok = dict["session_token"] as! String
                     
+                    if DEBUG {
+                        print("SUCCESS: session token - \(sessTok)")
+                    }
                     
-                    
-                    
-                    
-                    
-                    
-                    //appDelegate.SESSIONTOKEN = sessTok
                     break
                     
                 case .failure(let error):
@@ -241,15 +195,7 @@ class TwitterTableViewController: UITableViewController {
                 response in
                 switch(response.result) {
                     case .success(let JSON):
-                        //print(response.request!)  // original URL request
-                        //print(response.response!) // HTTP URL response
-                        //print(response.data!)     // server data
-                        //print(response.result)   // result of response serialization
-                    
-                        //if let JSON = response.result.value {
-                        //    print("JSON: \(JSON)")
-                        //}
-                    
+                        
                         let dict = JSON as! [String : AnyObject]
                         let sessTok = dict["session_token"] as! String
                         
@@ -266,10 +212,6 @@ class TwitterTableViewController: UITableViewController {
                         appDelegate.setSSKeychain(password: sessTok,
                                            forService: appDelegate.kWazzuTwitterToken,
                                            account: parameters["username"]!)
-                        
-                        // save password and session_token in keychain
-                        //appDelegate.PASSWORD = parameters["password"]!
-                        //appDelegate.SESSIONTOKEN = sessTok
                         
                         // enable "add tweet" button
                         self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -347,49 +289,30 @@ class TwitterTableViewController: UITableViewController {
                 response in
                 switch(response.result) {
                 case .success(let JSON):
-                    //print(response.request!)  // original URL request
-                    //print(response.response!) // HTTP URL response
-                    //print(response.data!)     // server data
-                    //print(response.result)   // result of response serialization
-                    
-                    //if let JSON = response.result.value {
-                    //    print("JSON: \(JSON)")
-                    //}
                     
                     let dict = JSON as! [String : AnyObject]
                     let sessTok = dict["session_token"] as! String
-                    // reset username
-                
                     
-                    var SSKpasswrd = appDelegate.getSSKeychain(account: appDelegate.USERNAME,
+                    if DEBUG {
+                        print("SUCCESS session token - \(sessTok)")
+                    }
+                    
+                    // reset username
+                    let SSKpasswrd = appDelegate.getSSKeychain(account: appDelegate.USERNAME,
                                                 forService: appDelegate.kWazzuTwitterPassword)
                     SSKpasswrd.password = ""
                     try! SSKpasswrd.save()
                     
-                    var SSKtoken = appDelegate.getSSKeychain(account: appDelegate.USERNAME,
+                    let SSKtoken = appDelegate.getSSKeychain(account: appDelegate.USERNAME,
                                                         forService: appDelegate.kWazzuTwitterToken)
                     SSKtoken.password = ""
                     try! SSKtoken.save()
                     
-                    
-                    
-                    
-                    /*
-                    let slookupQuery = SAMKeychainQuery()
-                    slookupQuery.service = appDelegate.kWazzuTwitterToken
-                    slookupQuery.account = appDelegate.USERNAME
-                    try! slookupQuery.fetch()
-                    print("after changing password")
-                    print(slookupQuery.password)
-                    */
-                    
                     appDelegate.USERNAME = ""
-                    // reset password and session_token in keychain
                     
-                    //appDelegate.PASSWORD = ""
-                    //appDelegate.SESSIONTOKEN = sessTok
                     // disable "add tweet" button
                     self.navigationItem.rightBarButtonItem?.isEnabled = false
+                    
                     // change title of controller to show Guest, etc...
                     self.title = "Guest"
                     appDelegate.LOGIN = false
@@ -412,7 +335,10 @@ class TwitterTableViewController: UITableViewController {
     @IBAction func refreshTweets(_ sender: AnyObject) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
-        print ("refreshing tweets")
+        if DEBUG {
+            print ("refreshing tweets")
+        }
+        
         let kBaseURLString = "https://ezekiel.encs.vancouver.wsu.edu/~cs458/cgi-bin"
         
         let dateFormatter = DateFormatter()
@@ -421,23 +347,11 @@ class TwitterTableViewController: UITableViewController {
         let lastTweetDate = appDelegate.lastTweetDate()
         let dateStr = dateFormatter.string(from: lastTweetDate as Date)
         
-        
-        print ("making alamofire request")
         // format date string from latest stored tweet...
         Alamofire.request(kBaseURLString + "/get-tweets.cgi", method: .get, parameters: ["date" : dateStr])
             .responseJSON {response in
                 switch(response.result) {
                 case .success(let JSON):
-                    //print("succes with AF")
-                    
-                    //print(response.request!)  // original URL request
-                    //print(response.response!) // HTTP URL response
-                    //print(response.data!)     // server data
-                    //print(response.result)   // result of response serialization
-                    
-                    //if let JSON = response.result.value {
-                    //    print("JSON: \(JSON)")
-                    //}
                     
                     let dict = JSON as! [String : AnyObject]
                     // tweets now holds all the tweats from server
@@ -445,7 +359,6 @@ class TwitterTableViewController: UITableViewController {
                     // ... create a new Tweet object for each returned tweet dictionary
                     var tweetDict = [Tweet]()
                     for tweet in tweets {
-                        
                         
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -465,12 +378,6 @@ class TwitterTableViewController: UITableViewController {
                     tweetDict.reverse()
                     appDelegate.tweets.removeAll()
                     for tweet in tweetDict {
-                        //print(tweet.tweet_id)
-                        //print(tweet.username)
-                        //print(tweet.isdeleted)
-                        //print(tweet.tweet)
-                        //print(tweet.Date)
-                        //print("")
                         
                         if tweet.isdeleted == 0{
                             appDelegate.tweets.append(tweet)
@@ -512,9 +419,6 @@ class TwitterTableViewController: UITableViewController {
         }
 
     }
-    
-    
-    
     
     //================
     // TableView Setup
@@ -609,8 +513,6 @@ class TwitterTableViewController: UITableViewController {
         if editingStyle == .delete {
             // Delete the row from the data source
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            //print (appDelegate.tweets[indexPath.row].tweet_id)
-            //print (appDelegate.tweets[indexPath.row].tweet)
             
             // Tweet came from me
             if appDelegate.tweets[indexPath.row].username == appDelegate.USERNAME {
@@ -662,18 +564,13 @@ class TwitterTableViewController: UITableViewController {
                 response in
                 switch(response.result) {
                 case .success(let JSON):
-                    //print(response.request!)  // original URL request
-                    //print(response.response!) // HTTP URL response
-                    //print(response.data!)     // server data
-                    //print(response.result)   // result of response serialization
-                    
-                    //if let JSON = response.result.value {
-                    //    print("JSON: \(JSON)")
-                    //}
                     
                     let dict = JSON as! [String : AnyObject]
-                    //print (dict)
                     
+                    if DEBUG {
+                        print("Success Delete")
+                        print (dict)
+                    }
                     break
                     
                 case .failure(let error):
