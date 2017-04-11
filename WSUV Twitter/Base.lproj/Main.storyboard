@@ -23,11 +23,11 @@
                                 <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KqB-VM-cX8" id="s7b-Ya-Dse">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Pnd-G2-EPl">
-                                            <rect key="frame" x="15" y="0.0" width="384" height="43"/>
+                                            <rect key="frame" x="15" y="0.0" width="384" height="43.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -75,7 +75,7 @@
             </objects>
             <point key="canvasLocation" x="-348" y="165"/>
         </scene>
-        <!--Add Tweet Controller-->
+        <!--Add Tweet-->
         <scene sceneID="bRq-PU-B8P">
             <objects>
                 <tableViewController id="ruH-XM-5Ca" customClass="AddTweetTableViewController" customModule="WSUV_Twitter" customModuleProvider="target" sceneMemberID="viewController">
@@ -132,7 +132,7 @@
                             <outlet property="delegate" destination="ruH-XM-5Ca" id="BRw-0R-zFd"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Add Tweet Controller" id="Eyf-oh-2T0">
+                    <navigationItem key="navigationItem" title="Add Tweet" id="Eyf-oh-2T0">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="Lue-VN-XLs">
                             <connections>
                                 <action selector="cancel:" destination="ruH-XM-5Ca" id="guH-ld-Gpx"/>

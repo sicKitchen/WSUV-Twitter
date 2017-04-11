@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E22D3F701E9D788100461A5F /* twitter-title.png in Resources */ = {isa = PBXBuildFile; fileRef = E22D3F6F1E9D788100461A5F /* twitter-title.png */; };
+		E22D3F791E9D7FAC00461A5F /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E29B1FCE1E96011F0031B9F0 /* Alamofire.framework */; };
 		E264D3FB1E9C8B5900BF053E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E264D3FA1E9C8B5900BF053E /* Security.framework */; };
 		E264D4011E9C8BC000BF053E /* SAMKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = E264D3FE1E9C8BC000BF053E /* SAMKeychain.m */; };
 		E264D4021E9C8BC000BF053E /* SAMKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = E264D4001E9C8BC000BF053E /* SAMKeychainQuery.m */; };
@@ -112,6 +113,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E22D3F791E9D7FAC00461A5F /* Alamofire.framework in Frameworks */,
 				E264D3FB1E9C8B5900BF053E /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -214,7 +216,7 @@
 				TargetAttributes = {
 					E29B1F441E95A0E80031B9F0 = {
 						CreatedOnToolsVersion = 8.3;
-						DevelopmentTeam = YL4J9CQ3NN;
+						DevelopmentTeam = 266548894Y;
 						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
@@ -448,7 +450,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = YL4J9CQ3NN;
+				DEVELOPMENT_TEAM = 266548894Y;
 				INFOPLIST_FILE = "WSUV Twitter/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "sk.WSUV-Twitter";
@@ -465,7 +467,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = YL4J9CQ3NN;
+				DEVELOPMENT_TEAM = 266548894Y;
 				INFOPLIST_FILE = "WSUV Twitter/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "sk.WSUV-Twitter";
