@@ -26,10 +26,6 @@ class ViewController: UIViewController {
                 print("JSON: \(JSON)")
             }
         }
-        
-        
-        
-        
     }
 
     override func didReceiveMemoryWarning() {
