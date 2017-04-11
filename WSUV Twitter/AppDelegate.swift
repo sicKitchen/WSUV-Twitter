@@ -53,8 +53,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var tweets = [Tweet]()
     var USERNAME : String = ""
-    var PASSWORD : String = ""
-    var SESSIONTOKEN : String = "0"
+    //var PASSWORD : String = ""
+    //var SESSIONTOKEN : String = "0"
     var LOGIN : Bool = false
     let kWazzuTwitterPassword = "WazzuTwitterPassword"  // KeyChain service
     let kWazzuTwitterToken = "WazzuTwitterToken"
@@ -99,6 +99,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    
+    
+    //======================
+    // Set a secure keychain
+    //======================
+    func setSSKeychain(password: String, forService: String, account: String) {
+        // --save password to keychain
+        let SSK = SAMKeychainQuery()   // New item
+        SSK.password = password
+        SSK.service = forService
+        SSK.account = account
+        try! SSK.save()
+    }
+    
+    //====================================
+    // Get a secure Keychain back 
+    // - look up is by account and service
+    //====================================
+    func getSSKeychain(account: String, forService: String) -> SAMKeychainQuery {
+        // --look up a keychain
+        let SSK = SAMKeychainQuery()
+        SSK.service = forService
+        SSK.account = account
+        try! SSK.fetch()
+        return SSK
     }
     
 }

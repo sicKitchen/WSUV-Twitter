@@ -78,7 +78,17 @@ class TwitterTableViewController: UITableViewController {
         if appDelegate.LOGIN {
             alertController = UIAlertController(title: "Logout", message: "Please Log out", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "Logout", style: .default, handler: { _ in
-                self.logoutUser(username: appDelegate.USERNAME, password: appDelegate.PASSWORD)
+                
+                
+                // Look up
+                let lookupQuery = SAMKeychainQuery()
+                lookupQuery.service = appDelegate.kWazzuTwitterPassword
+                lookupQuery.account = appDelegate.USERNAME
+                try! lookupQuery.fetch()
+                
+                
+                self.logoutUser(username: appDelegate.USERNAME, password: lookupQuery.password!)
+                //self.logoutUser(username: appDelegate.USERNAME, password: appDelegate.PASSWORD)
             }))
         } else {
             
@@ -160,7 +170,14 @@ class TwitterTableViewController: UITableViewController {
                     
                     let dict = JSON as! [String : AnyObject]
                     let sessTok = dict["session_token"] as! String
-                    appDelegate.SESSIONTOKEN = sessTok
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    //appDelegate.SESSIONTOKEN = sessTok
                     break
                     
                 case .failure(let error):
@@ -240,22 +257,19 @@ class TwitterTableViewController: UITableViewController {
                         appDelegate.USERNAME = parameters["username"]!
                         
                         // --save password to keychain
-                        let password = SAMKeychainQuery()   // New item
-                        password.password = parameters["password"]!
-                        password.service = appDelegate.kWazzuTwitterPassword
-                        password.account = parameters["username"]!
-                        try! password.save()
+                        appDelegate.setSSKeychain(password: parameters["password"]!,
+                                      forService: appDelegate.kWazzuTwitterPassword,
+                                      account: parameters["username"]!)
                         
                         // --save Session token to keychain
-                        let Query = SAMKeychainQuery()   // New item
-                        Query.password = sessTok
-                        Query.service = appDelegate.kWazzuTwitterToken
-                        Query.account = parameters["username"]!
-                        try! Query.save()
+                        
+                        appDelegate.setSSKeychain(password: sessTok,
+                                           forService: appDelegate.kWazzuTwitterToken,
+                                           account: parameters["username"]!)
                         
                         // save password and session_token in keychain
-                        appDelegate.PASSWORD = parameters["password"]!
-                        appDelegate.SESSIONTOKEN = sessTok
+                        //appDelegate.PASSWORD = parameters["password"]!
+                        //appDelegate.SESSIONTOKEN = sessTok
                         
                         // enable "add tweet" button
                         self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -347,27 +361,33 @@ class TwitterTableViewController: UITableViewController {
                     // reset username
                 
                     
-                    // Look up
-                    let lookupQuery = SAMKeychainQuery()
-                    lookupQuery.service = appDelegate.kWazzuTwitterPassword
-                    lookupQuery.account = appDelegate.USERNAME
-                    try! lookupQuery.fetch()
-                    lookupQuery.password = ""
-                    try! lookupQuery.save()
+                    var SSKpasswrd = appDelegate.getSSKeychain(account: appDelegate.USERNAME,
+                                                forService: appDelegate.kWazzuTwitterPassword)
+                    SSKpasswrd.password = ""
+                    try! SSKpasswrd.save()
                     
+                    var SSKtoken = appDelegate.getSSKeychain(account: appDelegate.USERNAME,
+                                                        forService: appDelegate.kWazzuTwitterToken)
+                    SSKtoken.password = ""
+                    try! SSKtoken.save()
+                    
+                    
+                    
+                    
+                    /*
                     let slookupQuery = SAMKeychainQuery()
-                    slookupQuery.service = appDelegate.kWazzuTwitterPassword
+                    slookupQuery.service = appDelegate.kWazzuTwitterToken
                     slookupQuery.account = appDelegate.USERNAME
                     try! slookupQuery.fetch()
                     print("after changing password")
                     print(slookupQuery.password)
-                    
+                    */
                     
                     appDelegate.USERNAME = ""
                     // reset password and session_token in keychain
                     
-                    appDelegate.PASSWORD = ""
-                    appDelegate.SESSIONTOKEN = sessTok
+                    //appDelegate.PASSWORD = ""
+                    //appDelegate.SESSIONTOKEN = sessTok
                     // disable "add tweet" button
                     self.navigationItem.rightBarButtonItem?.isEnabled = false
                     // change title of controller to show Guest, etc...
@@ -594,8 +614,15 @@ class TwitterTableViewController: UITableViewController {
             
             // Tweet came from me
             if appDelegate.tweets[indexPath.row].username == appDelegate.USERNAME {
+                
+                
+                let SessionToken = appDelegate.getSSKeychain(account: appDelegate.USERNAME,
+                              forService: appDelegate.kWazzuTwitterToken)
+                
+                
                 self.deleteTweet(username: appDelegate.USERNAME,
-                                 session_token: appDelegate.SESSIONTOKEN,
+                                 //session_token: appDelegate.SESSIONTOKEN,
+                                 session_token: SessionToken.password!,
                                  tweet_id: appDelegate.tweets[indexPath.row].tweet_id)
                 
                 appDelegate.tweets.remove(at: indexPath.row)
@@ -700,6 +727,9 @@ class TwitterTableViewController: UITableViewController {
             })
 
     }
+    
+    
+    
     
 
     /*

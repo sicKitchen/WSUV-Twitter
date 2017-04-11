@@ -33,8 +33,15 @@ class AddTweetTableViewController: UITableViewController, UITextViewDelegate {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         // Make sure user entered something
         if tweetTextView.text != "" {
+            
+            let sessionToken = appDelegate.getSSKeychain(account: appDelegate.USERNAME,
+                                      forService: appDelegate.kWazzuTwitterToken)
+            
+            
+            
             self.addTweet(username: appDelegate.USERNAME,
-                          session_token: appDelegate.SESSIONTOKEN,
+                          //session_token: appDelegate.SESSIONTOKEN,
+                          session_token: sessionToken.password!,
                           tweet: tweetTextView.text)
         }
     }
