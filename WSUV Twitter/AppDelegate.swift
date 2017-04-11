@@ -30,7 +30,6 @@ class Tweet: NSObject, NSCoding {
         let tweet_id = aDecoder.decodeObject(forKey: "tweet_id") as! Int
         let username = aDecoder.decodeObject(forKey: "username") as! String
         let isdeleted = aDecoder.decodeObject(forKey: "isdeleted") as! Int
-        //let isdeleted = aDecoder.decodeBool(forKey: "isdeleted")
         let tweet = aDecoder.decodeObject(forKey: "tweet") as! NSString
         let Date = aDecoder.decodeObject(forKey: "Date") as! NSDate
         
@@ -53,8 +52,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var tweets = [Tweet]()
     var USERNAME : String = ""
-    //var PASSWORD : String = ""
-    //var SESSIONTOKEN : String = "0"
     var LOGIN : Bool = false
     let kWazzuTwitterPassword = "WazzuTwitterPassword"  // KeyChain service
     let kWazzuTwitterToken = "WazzuTwitterToken"

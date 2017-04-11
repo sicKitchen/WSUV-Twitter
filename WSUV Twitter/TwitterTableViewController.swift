@@ -389,15 +389,13 @@ class TwitterTableViewController: UITableViewController {
                     tweetDict.reverse()
                     appDelegate.tweets.removeAll()
                     for tweet in tweetDict {
-                        
                         if tweet.isdeleted == 0{
                             appDelegate.tweets.append(tweet)
                         }
-                        
                     }
-                    
                     self.tableView.reloadData() // force table-view to be updated
                     self.refreshControl?.endRefreshing()
+                    
                 case .failure(let error):
                     let message : String
                     if let httpStatusCode = response.response?.statusCode {
@@ -470,7 +468,9 @@ class TwitterTableViewController: UITableViewController {
     
     let tweetTitleAttributes = [
         NSFontAttributeName : UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline),
-        NSForegroundColorAttributeName : UIColor.purple
+        //NSForegroundColorAttributeName : UIColor.purple
+        // This is twitters actual logo color
+        NSForegroundColorAttributeName : UIColor(red: 0/255.0, green: 132/255.0, blue: 180/255.0, alpha: 1.0)
     ]
     
     lazy var tweetBodyAttributes : [String : AnyObject] = {

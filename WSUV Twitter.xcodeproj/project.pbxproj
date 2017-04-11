@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E22D3F701E9D788100461A5F /* twitter-title.png in Resources */ = {isa = PBXBuildFile; fileRef = E22D3F6F1E9D788100461A5F /* twitter-title.png */; };
 		E264D3FB1E9C8B5900BF053E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E264D3FA1E9C8B5900BF053E /* Security.framework */; };
 		E264D4011E9C8BC000BF053E /* SAMKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = E264D3FE1E9C8BC000BF053E /* SAMKeychain.m */; };
 		E264D4021E9C8BC000BF053E /* SAMKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = E264D4001E9C8BC000BF053E /* SAMKeychainQuery.m */; };
+		E264D4041E9D6D7C00BF053E /* twitter-logo-final.png in Resources */ = {isa = PBXBuildFile; fileRef = E264D4031E9D6D7900BF053E /* twitter-logo-final.png */; };
 		E29B1F491E95A0E90031B9F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29B1F481E95A0E90031B9F0 /* AppDelegate.swift */; };
 		E29B1F4B1E95A0E90031B9F0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29B1F4A1E95A0E90031B9F0 /* ViewController.swift */; };
 		E29B1F4E1E95A0E90031B9F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E29B1F4C1E95A0E90031B9F0 /* Main.storyboard */; };
@@ -85,12 +87,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E22D3F6F1E9D788100461A5F /* twitter-title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter-title.png"; sourceTree = "<group>"; };
 		E264D3FA1E9C8B5900BF053E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		E264D3FC1E9C8BBF00BF053E /* WSUV Twitter-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WSUV Twitter-Bridging-Header.h"; sourceTree = "<group>"; };
 		E264D3FD1E9C8BC000BF053E /* SAMKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMKeychain.h; sourceTree = "<group>"; };
 		E264D3FE1E9C8BC000BF053E /* SAMKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMKeychain.m; sourceTree = "<group>"; };
 		E264D3FF1E9C8BC000BF053E /* SAMKeychainQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMKeychainQuery.h; sourceTree = "<group>"; };
 		E264D4001E9C8BC000BF053E /* SAMKeychainQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMKeychainQuery.m; sourceTree = "<group>"; };
+		E264D4031E9D6D7900BF053E /* twitter-logo-final.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter-logo-final.png"; sourceTree = "<group>"; };
 		E29B1F451E95A0E80031B9F0 /* WSUV Twitter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WSUV Twitter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E29B1F481E95A0E90031B9F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E29B1F4A1E95A0E90031B9F0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -157,6 +161,8 @@
 				E264D3FF1E9C8BC000BF053E /* SAMKeychainQuery.h */,
 				E264D4001E9C8BC000BF053E /* SAMKeychainQuery.m */,
 				E264D3FC1E9C8BBF00BF053E /* WSUV Twitter-Bridging-Header.h */,
+				E264D4031E9D6D7900BF053E /* twitter-logo-final.png */,
+				E22D3F6F1E9D788100461A5F /* twitter-title.png */,
 			);
 			path = "WSUV Twitter";
 			sourceTree = "<group>";
@@ -296,7 +302,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E29B1F531E95A0E90031B9F0 /* LaunchScreen.storyboard in Resources */,
+				E264D4041E9D6D7C00BF053E /* twitter-logo-final.png in Resources */,
 				E29B1F501E95A0E90031B9F0 /* Assets.xcassets in Resources */,
+				E22D3F701E9D788100461A5F /* twitter-title.png in Resources */,
 				E29B1F4E1E95A0E90031B9F0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
