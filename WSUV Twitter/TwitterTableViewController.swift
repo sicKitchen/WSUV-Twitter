@@ -28,6 +28,33 @@ class TwitterTableViewController: UITableViewController {
         // Calls first refresh for us
         self.refreshTweets(self)
         
+        
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        // New item
+        let newQuery = SAMKeychainQuery()
+        newQuery.password = "testing"
+        newQuery.service = appDelegate.kWazzuTwitterPassword
+        newQuery.account = "test"
+        try! newQuery.save()
+        
+        // Look up
+        let lookupQuery = SAMKeychainQuery()
+        lookupQuery.service = appDelegate.kWazzuTwitterPassword
+        lookupQuery.account = "test"
+        try! lookupQuery.fetch()
+        
+        print(lookupQuery.password)
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -100,6 +127,7 @@ class TwitterTableViewController: UITableViewController {
                                                   preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
+                    self.refreshControl?.endRefreshing()
                 }
             }))
         }
@@ -172,7 +200,7 @@ class TwitterTableViewController: UITableViewController {
                         
                         break
                     }
-                    
+                    self.refreshControl?.endRefreshing()
                     break
                 }
             })
@@ -207,13 +235,31 @@ class TwitterTableViewController: UITableViewController {
                     
                         let dict = JSON as! [String : AnyObject]
                         let sessTok = dict["session_token"] as! String
+                        
                         // save username
                         appDelegate.USERNAME = parameters["username"]!
+                        
+                        // --save password to keychain
+                        let password = SAMKeychainQuery()   // New item
+                        password.password = parameters["password"]!
+                        password.service = appDelegate.kWazzuTwitterPassword
+                        password.account = parameters["username"]!
+                        try! password.save()
+                        
+                        // --save Session token to keychain
+                        let Query = SAMKeychainQuery()   // New item
+                        Query.password = sessTok
+                        Query.service = appDelegate.kWazzuTwitterToken
+                        Query.account = parameters["username"]!
+                        try! Query.save()
+                        
                         // save password and session_token in keychain
                         appDelegate.PASSWORD = parameters["password"]!
                         appDelegate.SESSIONTOKEN = sessTok
+                        
                         // enable "add tweet" button
                         self.navigationItem.rightBarButtonItem?.isEnabled = true
+                        
                         // change title of controller to show username, etc...
                         self.title = appDelegate.USERNAME
                         appDelegate.LOGIN = true
@@ -264,7 +310,7 @@ class TwitterTableViewController: UITableViewController {
                             
                             break
                         }
-                        
+                        self.refreshControl?.endRefreshing()
                         break
                 }
         })
@@ -299,8 +345,27 @@ class TwitterTableViewController: UITableViewController {
                     let dict = JSON as! [String : AnyObject]
                     let sessTok = dict["session_token"] as! String
                     // reset username
+                
+                    
+                    // Look up
+                    let lookupQuery = SAMKeychainQuery()
+                    lookupQuery.service = appDelegate.kWazzuTwitterPassword
+                    lookupQuery.account = appDelegate.USERNAME
+                    try! lookupQuery.fetch()
+                    lookupQuery.password = ""
+                    try! lookupQuery.save()
+                    
+                    let slookupQuery = SAMKeychainQuery()
+                    slookupQuery.service = appDelegate.kWazzuTwitterPassword
+                    slookupQuery.account = appDelegate.USERNAME
+                    try! slookupQuery.fetch()
+                    print("after changing password")
+                    print(slookupQuery.password)
+                    
+                    
                     appDelegate.USERNAME = ""
                     // reset password and session_token in keychain
+                    
                     appDelegate.PASSWORD = ""
                     appDelegate.SESSIONTOKEN = sessTok
                     // disable "add tweet" button
@@ -310,17 +375,12 @@ class TwitterTableViewController: UITableViewController {
                     appDelegate.LOGIN = false
                     break
                 case .failure(let error):
-                    print ("error: login")
+                    // Log to console
+                    let statusCode = response.response!.statusCode
+                    print("ERROR: \(statusCode)")
+                    print (error)
+                    print ()
                     
-                    print(response.request!)  // original URL request
-                    print(response.response!) // HTTP URL response
-                    print(response.data!)     // server data
-                    print(response.result)   // result of response serialization
-                    
-                    if let JSON = response.result.value {
-                        print("JSON: \(JSON)")
-                    }
-                    // inform user of error
                     break
                 }
             })
@@ -401,20 +461,32 @@ class TwitterTableViewController: UITableViewController {
                     self.tableView.reloadData() // force table-view to be updated
                     self.refreshControl?.endRefreshing()
                 case .failure(let error):
-                    print ("fail with AF")
                     let message : String
                     if let httpStatusCode = response.response?.statusCode {
                         switch(httpStatusCode) {
                         case 500:
                             message = "Server error (my bad)"
-                            // ...
-                        default:
-                            print("404/500/etc")
+                            print(message)
+                            break
+                            
+                        case 503:
+                            message = "Unable to connect to internal database"
+                            print(message)
+                            break
+                            
+                        default: break
+                            
                         }
                     } else { // probably network or server timeout
                         message = error.localizedDescription
+                        print(message)
                     }
                     // ... display alert with message ..
+                    let alert = UIAlertController(title: "Could not connect to Database",
+                                                  message: "Please try again later",
+                                                  preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
                     self.refreshControl?.endRefreshing()
                 }
         }
@@ -551,7 +623,6 @@ class TwitterTableViewController: UITableViewController {
     // Delete Tweet Func
     //==================
     func deleteTweet(username: String, session_token: String, tweet_id: Int) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let kBaseURLString = "https://ezekiel.encs.vancouver.wsu.edu/~cs458/cgi-bin"
         let urlString = kBaseURLString + "/del-tweet.cgi"
         let parameters = [
@@ -579,18 +650,50 @@ class TwitterTableViewController: UITableViewController {
                     break
                     
                 case .failure(let error):
-                    print ("error: register")
-                    
-                    print(response.request!)  // original URL request
-                    print(response.response!) // HTTP URL response
-                    print(response.data!)     // server data
-                    print(response.result)   // result of response serialization
-                    
-                    if let JSON = response.result.value {
-                        print("JSON: \(JSON)")
+                    let message : String
+                    if let httpStatusCode = response.response?.statusCode {
+                        switch(httpStatusCode) {
+                        case 500:
+                            message = "Server error (my bad)"
+                            print(message)
+                            break
+                            
+                        case 400:
+                            message = "all parameters not provided"
+                            print(message)
+                            break
+                            
+                        case 401:
+                            message = "Unauthorized"
+                            print(message)
+                            break
+                            
+                        case 403:
+                            message = "not the user’s tweet"
+                            print(message)
+                            break
+                            
+                        case 404:
+                            message = "no such user or no such tweet"
+                            print(message)
+                            break
+                            
+                        default: break
+                            
+                        }
+                    } else { // probably network or server timeout
+                        message = error.localizedDescription
+                        print(message)
                     }
-                    // inform user of error
-                   
+                    
+                    // ... display alert with message ..
+                    let alert = UIAlertController(title: "Could not delete tweet",
+                                                  message: "Check if you are tweet's owner",
+                                                  preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    self.refreshControl?.endRefreshing()
+
                     break
                 }
                 

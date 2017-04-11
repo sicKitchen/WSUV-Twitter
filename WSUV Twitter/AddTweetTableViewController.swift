@@ -73,17 +73,35 @@ class AddTweetTableViewController: UITableViewController, UITextViewDelegate {
                     break
                     
                 case .failure(let error):
-                    print ("error: register")
-                    
-                    print(response.request!)  // original URL request
-                    print(response.response!) // HTTP URL response
-                    print(response.data!)     // server data
-                    print(response.result)   // result of response serialization
-                    
-                    if let JSON = response.result.value {
-                        print("JSON: \(JSON)")
+                    let message : String
+                    if let httpStatusCode = response.response?.statusCode {
+                        switch(httpStatusCode) {
+                        case 500:
+                            message = "Server error (my bad)"
+                            print(message)
+                            break
+                            
+                        case 503:
+                            message = "Unable to connect to internal database"
+                            print(message)
+                            break
+                            
+                        default: break
+                            
+                        }
+                    } else { // probably network or server timeout
+                        message = error.localizedDescription
+                        print(message)
                     }
-                    // inform user of error
+                    
+                    // ... display alert with message ..
+                    let alert = UIAlertController(title: "Could not connect to Database",
+                                                  message: "Please try again later",
+                                                  preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    self.refreshControl?.endRefreshing()
+                    
                     break
                 }
             })
