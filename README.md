@@ -190,7 +190,7 @@ WSUV Twitter
 
 **[Spencer Kitchen](mailto:spencer.kitchen@wsu.edu)**
 
-Student ID: 11480841
+
 
 
 
